@@ -19,15 +19,6 @@ public class Testing implements ClientModInitializer {
         event -> {
           Minecraft.getInstance().gui.getChat().addMessage(Component.literal("pong"));
         });
-
-    ChatListener.onMatch(
-        "ping",
-        event -> {
-          Minecraft.getInstance()
-              .gui
-              .getChat()
-              .addMessage(Component.literal("pong matched with: " + event.text()));
-        });
     LOGGER.info("ChatListener Loaded");
   }
 }
