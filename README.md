@@ -23,6 +23,7 @@ public void onInitializeClient() {
 ### Methods
 
 #### `onMatch(String regex, Consumer<ChatEvent> handler)`
+
 Fires when the message matches a regex pattern. Matches substrings — `"ping"` will also match `"warping"`.
 
 ```java
@@ -32,43 +33,11 @@ ChatListener.onMatch("You earned (\\d+) coins", event -> {
 ```
 
 #### `onPhrase(String phrase, Consumer<ChatEvent> handler)`
+
 Fires when the message contains the phrase as a distinct word or phrase. `"ping"` will not match `"warping"`. No regex knowledge needed.
 
 ```java
 ChatListener.onPhrase("ping", event -> {
     // fires on "ping" but not "warping"
 });
-```
-
-Both methods accept an optional `int priority` as a third argument. Higher values run first. Default is `0`.
-
-### ChatEvent
-
-| Method | Description |
-|---|---|
-| `event.text()` | Plain text of the message |
-| `event.message()` | Full `Component` with formatting |
-| `event.sender()` | `GameProfile` of sender, or `null` for system messages |
-| `event.isOwn()` | `true` if sent by the local player (vanilla/singleplayer only) |
-| `event.group(int)` | Regex capture group by index, or `null` |
-| `event.matcher()` | The raw `Matcher` object, or `null` |
-
-## Adding as a dependency
-
-Publish to local Maven:
-
-```bash
-./gradlew publishToMavenLocal
-```
-
-In your mod's `build.gradle`:
-
-```groovy
-repositories {
-    mavenLocal()
-}
-
-dependencies {
-    modImplementation include("chatlistener:chatlistener:1.0.0")
-}
 ```
