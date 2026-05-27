@@ -135,6 +135,41 @@ public class ChatListener {
     onPhrase(phrase, handler, 0);
   }
 
+  /**
+   * Registers a handler that fires only when the entire message is exactly equal to the given text.
+   *
+   * <pre>{@code
+   * // Fires only if the message is exactly "hello" — not "hello world" or "say hello"
+   * ChatListener.onExact("hello", event -> {
+   *     Minecraft.getInstance().gui.getChat().addMessage(Component.literal("Hey!"));
+   * });
+   * }</pre>
+   *
+   * @param text the exact message text to match against
+   * @param handler the action to run on the next tick when a match is found
+   * @param priority higher values run first; default is 0
+   */
+  public static void onExact(String text, Consumer<ChatEvent> handler, int priority) {
+    handlers.add(new Registration(priority, event -> event.text().equals(text), handler));
+    handlers.sort((a, b) -> Integer.compare(b.priority(), a.priority()));
+  }
+
+  /**
+   * Registers a handler that fires only when the entire message is exactly equal to the given text.
+   *
+   * <pre>{@code
+   * ChatListener.onExact("!reload", event -> {
+   *     // runs only when the message is literally "!reload"
+   * });
+   * }</pre>
+   *
+   * @param text the exact message text to match against
+   * @param handler the action to run on the next tick when a match is found
+   */
+  public static void onExact(String text, Consumer<ChatEvent> handler) {
+    onExact(text, handler, 0);
+  }
+
   private static void dispatch(ChatEvent event) {
     for (Registration reg : handlers) {
       if (reg.filter().test(event)) {
